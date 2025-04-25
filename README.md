@@ -47,8 +47,8 @@ cd build/out
 
 - `-i`：声网App ID
 - `-c`：频道名称
-- `I` 或 `--capture-device`：指定录音设备名称
-- `O` 或 `--playback-device`：指定播放设备名称
+- `-I` 或 `--capture-device`：指定录音设备名称
+- `-O` 或 `--playback-device`：指定播放设备名称
 - `-t`：Token（可选）
 - `-l`：License（可选）
 - `-u`：用户ID（可选）
