@@ -12,7 +12,7 @@
 
 ## 编译要求
 
-- CMake 3.0或更高版本
+- CMake 2.4或更高版本
 - ALSA库
 - 声网RTSA SDK
 
@@ -40,13 +40,15 @@ aplay -l    # 查看播放设备
 2. 运行程序：
 ```bash
 cd build/out
-./audio_rtsa -i YOUR_APPID -c YOUR_CHANNEL_NAME
+./audio_rtsa -I "hw:0,0" -O "hw:1,0" -i YOUR_APPID -c YOUR_CHANNEL_NAME
 ```
 
 ## 参数说明
 
 - `-i`：声网App ID
 - `-c`：频道名称
+- `I` 或 `--capture-device`：指定录音设备名称
+- `O` 或 `--playback-device`：指定播放设备名称
 - `-t`：Token（可选）
 - `-l`：License（可选）
 - `-u`：用户ID（可选）
@@ -54,7 +56,7 @@ cd build/out
 
 ## 注意事项
 
-1. 确保USB麦克风和3.5mm音频输出设备已正确连接
+1. 确保音频输入输出设备已正确连接
 2. 确保网络连接稳定
 3. 确保有足够的系统资源
 4. 如果遇到权限问题，可能需要以root权限运行
