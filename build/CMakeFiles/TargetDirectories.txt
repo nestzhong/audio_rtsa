@@ -1,3 +1,0 @@
-/home/pi/Robot/audio/agora_rtsa_sdk/example/audio_rtsa/build/CMakeFiles/audio_rtsa.dir
-/home/pi/Robot/audio/agora_rtsa_sdk/example/audio_rtsa/build/CMakeFiles/edit_cache.dir
-/home/pi/Robot/audio/agora_rtsa_sdk/example/audio_rtsa/build/CMakeFiles/rebuild_cache.dir

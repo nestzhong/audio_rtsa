@@ -1,1 +1,0 @@
-/usr/bin/cc -rdynamic CMakeFiles/audio_rtsa.dir/audio_rtsa.c.o -o out/audio_rtsa   -L/home/pi/Robot/audio/agora_rtsa_sdk/example/audio_rtsa/../../agora_sdk/lib  -Wl,-rpath,/home/pi/Robot/audio/agora_rtsa_sdk/example/audio_rtsa/../../agora_sdk/lib -lagora-rtc-sdk -lasound -lpthread -lm 
