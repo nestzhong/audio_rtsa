@@ -131,7 +131,24 @@ static int init_audio_device(audio_device_t *dev, const char *capture_device,
     }
     
     // 设置采样率
-    dev->sample_rate = 16000;  // 16kHz
+    unsigned int min_rate, max_rate;
+    err = snd_pcm_hw_params_get_rate_min(dev->hw_params, &min_rate, NULL);
+    if (err < 0) {
+        LOGE("无法获取最小采样率: %s", snd_strerror(err));
+        goto error;
+    }
+    err = snd_pcm_hw_params_get_rate_max(dev->hw_params, &max_rate, NULL);
+    if (err < 0) {
+        LOGE("无法获取最大采样率: %s", snd_strerror(err));
+        goto error;
+    }
+    
+    dev->sample_rate = 16000;  // 目标采样率
+    if (dev->sample_rate < min_rate || dev->sample_rate > max_rate) {
+        LOGW("设备不支持目标采样率 %dHz，将使用 %dHz", dev->sample_rate, min_rate);
+        dev->sample_rate = min_rate;
+    }
+    
     err = snd_pcm_hw_params_set_rate_near(dev->capture_handle, dev->hw_params,
                                          &dev->sample_rate, 0);
     if (err < 0) {
@@ -140,13 +157,30 @@ static int init_audio_device(audio_device_t *dev, const char *capture_device,
     }
     
     // 设置通道数
-    dev->channels = 1;  // 单声道
+    unsigned int min_channels, max_channels;
+    err = snd_pcm_hw_params_get_channels_min(dev->hw_params, &min_channels);
+    if (err < 0) {
+        LOGE("无法获取最小通道数: %s", snd_strerror(err));
+        goto error;
+    }
+    err = snd_pcm_hw_params_get_channels_max(dev->hw_params, &max_channels);
+    if (err < 0) {
+        LOGE("无法获取最大通道数: %s", snd_strerror(err));
+        goto error;
+    }
+    
+    LOGI("设备支持的通道数范围: %d-%d", min_channels, max_channels);
+    
+    // 使用设备支持的最小通道数
+    dev->channels = min_channels;
     err = snd_pcm_hw_params_set_channels(dev->capture_handle, dev->hw_params,
                                         dev->channels);
     if (err < 0) {
         LOGE("无法设置通道数: %s", snd_strerror(err));
         goto error;
     }
+    
+    LOGI("音频设备配置: 采样率=%dHz, 通道数=%d", dev->sample_rate, dev->channels);
     
     // 设置缓冲区大小
     err = snd_pcm_hw_params_set_buffer_size_near(dev->capture_handle, dev->hw_params, &buffer_size);
